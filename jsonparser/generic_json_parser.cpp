@@ -19,7 +19,6 @@ GenericJsonParser::GenericJsonParser(const std::string &file)
 {
 }
 
-
 bool GenericJsonParser::Parse()
 {
     auto ret_val{false};
@@ -84,28 +83,13 @@ std::uint32_t GenericJsonParser::ArraySize(const std::string &key) const
     return retVal;
 }
 
-bool GenericJsonParser::ArrayElements(const std::string &key) const
+bool GenericJsonParser::GetEachNodeElements(const std::string &key) const
 {
     const rapidjson::Value& val = document_[key.c_str()];
     for (auto &v : val.GetArray())
     {
-        //const auto &lanes_boundaries{v["lanes_boundaries"] };
-        const rapidjson::Value& lanes_boundaries{v["lanes_boundaries"] };
-        // std::cout << "lanes_boundaries type " << (lanes_boundaries.GetType()) << "\n";
-        for(size_t i = 0 ; i < lanes_boundaries.Size(); i++)
-        {
-            std::cout << " ################# \n";
-            std::cout << "my lanes_boundaries = " << i << "\n";
-            const rapidjson::Value& poly_line = lanes_boundaries[i]["polyline"];
-            std::cout << "my polyline type " << (poly_line.GetType()) << "\n";
-            std::cout << " ################# \n";
-            for(size_t j = 0 ; j < poly_line.Size(); j++)
-            {
-                std::cout << "my poly_line = " << j << "\n";
-                std::vector<std::string> start_end_points{"point_end", "point_start"};
-                std::vector<std::vector<double>> points_vector = GetAllPoints(start_end_points, j, poly_line);
-            }
-        }
+        std::string lane_key_str("lanes_boundaries");
+        GetLaneBoundariesData(lane_key_str, v);
     }
     return true;
 }
@@ -120,26 +104,42 @@ double GenericJsonParser::GetDoubleValue(const std::string &key, const rapidjson
     return 0.0;
 }
 
-std::vector<double> GenericJsonParser::GetPoints(const std::vector<std::string> &keys,  const rapidjson::Value &points) const
+GenericJsonParser::Points GenericJsonParser::GetPoints(const std::vector<std::string> &keys,  const rapidjson::Value &points) const
 {
-    std::vector<double> x_y_vector;
+    Points point;
     for(auto &x_y: keys)
     {
-        x_y_vector.push_back(GetDoubleValue(x_y, points));
+        point.push_back(GetDoubleValue(x_y, points));
     }
-    return x_y_vector;
+    return point;
 }
 
-std::vector<std::vector<double>> GenericJsonParser::GetAllPoints(const std::vector<std::string> &start_end_points, int index,  const rapidjson::Value &poly_line) const
+GenericJsonParser::PolyLinePoints
+GenericJsonParser::GetPolyLinePoints(const std::vector<std::string> &start_end_points,
+        int index,  const rapidjson::Value &poly_line) const
 {
-    std::vector<std::vector<double>> points_vector;
+    PolyLinePoints poly_line_points;
     for (auto &plp: start_end_points)
     {
         std::cout << " ################# " << plp.c_str() << " #################\n";
         const rapidjson::Value &points = poly_line[index][plp.c_str()];
         std::vector<std::string> x_y_vec{"x", "y"};
-        points_vector.push_back(GetPoints(x_y_vec, points));
-        std::cout << " ################# \n";
+        poly_line_points.push_back(GetPoints(x_y_vec, points));
     }
-    return points_vector;
+    return poly_line_points;
+}
+
+void GenericJsonParser::GetLaneBoundariesData(std::string &key, const rapidjson::Value &val) const
+{
+    LaneBoundPolyLinePoints lb_poly_points_vec;
+    const rapidjson::Value& lanes_boundaries{val[key.c_str()] };
+    for(size_t i = 0 ; i < lanes_boundaries.Size(); i++)
+    {
+        const rapidjson::Value& poly_line = lanes_boundaries[i]["polyline"];
+        for(size_t j = 0 ; j < poly_line.Size(); j++)
+        {
+            std::vector<std::string> start_end_points{"point_end", "point_start"};
+            lb_poly_points_vec.push_back(GetPolyLinePoints(start_end_points, j, poly_line));
+        }
+    }
 }
