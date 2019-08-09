@@ -89,29 +89,57 @@ bool GenericJsonParser::ArrayElements(const std::string &key) const
     const rapidjson::Value& val = document_[key.c_str()];
     for (auto &v : val.GetArray())
     {
-        const auto &lanes_boundaries{v["lanes_boundaries"] };
+        //const auto &lanes_boundaries{v["lanes_boundaries"] };
+        const rapidjson::Value& lanes_boundaries{v["lanes_boundaries"] };
         // std::cout << "lanes_boundaries type " << (lanes_boundaries.GetType()) << "\n";
         for(size_t i = 0 ; i < lanes_boundaries.Size(); i++)
         {
             std::cout << " ################# \n";
             std::cout << "my lanes_boundaries = " << i << "\n";
-            const auto &poly_line = lanes_boundaries[i]["polyline"];
+            const rapidjson::Value& poly_line = lanes_boundaries[i]["polyline"];
             std::cout << "my polyline type " << (poly_line.GetType()) << "\n";
             std::cout << " ################# \n";
             for(size_t j = 0 ; j < poly_line.Size(); j++)
             {
-                //std::cout << "my polyline " << (poly_line[j].HasMember("point_end")) << "\n";
-                std::cout << " ################# \n";
                 std::cout << "my poly_line = " << j << "\n";
-
-                const auto &points = poly_line[j]["point_end"];
-                std::cout << "my points type " << (points.GetType()) << "\n";
-                std::cout << "my point x = " << (points["x"].GetDouble()) << "\n";
-                std::cout << "my point y = " << (points["y"].GetDouble()) << "\n";
-                std::cout << " ################# \n";
+                std::vector<std::string> start_end_points{"point_end", "point_start"};
+                std::vector<std::vector<double>> points_vector = GetAllPoints(start_end_points, j, poly_line);
             }
         }
     }
     return true;
 }
 
+double GenericJsonParser::GetDoubleValue(const std::string &key, const rapidjson::Value& val) const
+{
+    if (val.HasMember(key.c_str()))
+    {
+        std::cout << "my point " << key.c_str() << " = " << val[key.c_str()].GetDouble() << "\n";
+        return val[key.c_str()].GetDouble();
+    }
+    return 0.0;
+}
+
+std::vector<double> GenericJsonParser::GetPoints(const std::vector<std::string> &keys,  const rapidjson::Value &points) const
+{
+    std::vector<double> x_y_vector;
+    for(auto &x_y: keys)
+    {
+        x_y_vector.push_back(GetDoubleValue(x_y, points));
+    }
+    return x_y_vector;
+}
+
+std::vector<std::vector<double>> GenericJsonParser::GetAllPoints(const std::vector<std::string> &start_end_points, int index,  const rapidjson::Value &poly_line) const
+{
+    std::vector<std::vector<double>> points_vector;
+    for (auto &plp: start_end_points)
+    {
+        std::cout << " ################# " << plp.c_str() << " #################\n";
+        const rapidjson::Value &points = poly_line[index][plp.c_str()];
+        std::vector<std::string> x_y_vec{"x", "y"};
+        points_vector.push_back(GetPoints(x_y_vec, points));
+        std::cout << " ################# \n";
+    }
+    return points_vector;
+}

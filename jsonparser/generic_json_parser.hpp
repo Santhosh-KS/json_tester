@@ -2,6 +2,7 @@
 #define GENERIC_JSON_PARSER_HPP
 
 #include <string>
+#include <vector>
 
 #include "rapidjson/document.h"
 
@@ -21,6 +22,12 @@ class GenericJsonParser
         bool IsDouble(const std::string &key) const;
         bool IsBool(const std::string &key) const;
         bool IsString(const std::string &key) const;
+        bool ArrayElements(const std::string &key) const;
+        std::uint32_t ArraySize(const std::string &key) const;
+        bool GetElement(const std::vector<std::string> vec) const;
+        double GetDoubleValue(const std::string &key, const rapidjson::Value& val) const;
+        std::vector<double> GetPoints(const std::vector<std::string> &keys,  const rapidjson::Value &points) const;
+        std::vector<std::vector<double>> GetAllPoints(const std::vector<std::string> &start_end_points, int index,  const rapidjson::Value &poly_line) const;
     private:
         bool FileExists(const std::string &file) const;
 
