@@ -22,18 +22,16 @@ def CommandLineParser():
         return [args.in_file_name, args.out_file_name, args.root_node]
 
 def ParseFile(in_file, out_file='default_template.json', root_node='frames'):
-    print('Reading file ', in_file)
+    print('Reading from file : ', in_file, '\nRoot node : ', root_node)
     with open(in_file) as f:
         data = json.load(f)
         template_dict ={}
         JsonTemplateGenerator(data, root_node, template_dict)
-    
-    json_out = json.dumps(template_dict, indent=4, sort_keys=True, separators=(',', ': '))
-   
-    with open(out_file, 'w') as o_f:
-        o_f.write(json_out)
+        json_out = json.dumps(template_dict, indent=4, sort_keys=True, separators=(',', ': '))
+        print('Writing to file : ', out_file)
+        with open(out_file, 'w') as o_f:
+            o_f.write(json_out)
 
-    print('Writing to file ', out_file)
 
 def JsonTemplateGenerator(json_data, key, template_dict) :
     if (type(json_data[key]) is list):

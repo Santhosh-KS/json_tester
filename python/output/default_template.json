@@ -1,0 +1,47 @@
+{
+    "frames": [
+        "construction_area",
+        "lanes_boundaries",
+        "semantic_lanes",
+        "semantic_road_description",
+        "timestamp"
+    ],
+    "lanes_boundaries": [
+        "camera_id",
+        "cross_check",
+        "id",
+        "lane_color",
+        "lane_type",
+        "polyline"
+    ],
+    "point_end": [
+        "x",
+        "y"
+    ],
+    "point_start": [
+        "x",
+        "y"
+    ],
+    "polyline": [
+        "lane_orientation",
+        "point_end",
+        "point_start"
+    ],
+    "semantic_lanes": [
+        "cross_check",
+        "id",
+        "semantic_lane_direction",
+        "semantic_lane_position",
+        "semantic_lane_type"
+    ],
+    "semantic_road_description": [
+        "cross_check",
+        "id",
+        "semantic_road_description_point",
+        "semantic_road_description_type"
+    ],
+    "semantic_road_description_point": [
+        "x",
+        "y"
+    ]
+}
