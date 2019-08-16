@@ -27,7 +27,7 @@ def ParseFile(in_file, out_file='default_template.json', root_node='frames'):
         data = json.load(f)
         template_dict ={}
         JsonTemplateGenerator(data, root_node, template_dict)
-        json_out = json.dumps(template_dict, indent=4, sort_keys=True, separators=(',', ': '))
+        json_out = json.dumps(template_dict, indent=4, separators=(',', ': '))
         print('Writing to file : ', out_file)
         with open(out_file, 'w') as o_f:
             o_f.write(json_out)
