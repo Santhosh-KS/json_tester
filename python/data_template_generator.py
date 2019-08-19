@@ -39,7 +39,7 @@ def JsonTemplateGenerator(json_data, key, template_dict) :
             nested_data = json_data[key][0].keys()
             temp_data = json_data[key][0]
             template_dict[key] = list(nested_data)
-            [JsonTemplateGenerator(temp_data, item, template_dict) for item in nested_data]     
+            [JsonTemplateGenerator(temp_data, item, template_dict) for item in nested_data if temp_data[item]]
     if type(json_data[key]) is dict:
         template_dict[key] = list(json_data[key].keys())
  

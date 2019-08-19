@@ -1,0 +1,71 @@
+{
+    "frames": [
+        {
+            "construction_area": false,
+            "lanes_boundaries": [
+                {
+                    "camera_id": "CAMERA_SIDE_REAR_LEFT",
+                    "cross_check": 0,
+                    "id": "f6dcf478-4430-4c0c-94b5-535ebecd80bb",
+                    "lane_color": "NO_COLOR",
+                    "lane_type": "ELEVATED_STRUCTURE",
+                    "polyline": [
+                        {
+                            "lane_orientation": "NA",
+                            "point_end": {
+                                "x": 1083.6396843048376,
+                                "y": 554.8597523127107
+                            },
+                            "point_start": {
+                                "x": 1280.0454527062293,
+                                "y": 581.5803605183628
+                            }
+                        }
+                    ]
+                },
+                {
+                    "camera_id": "CAMERA_SIDE_REAR_LEFT",
+                    "cross_check": 0,
+                    "id": "c7d37f92-8dc7-4db1-a625-d39caf6ed468",
+                    "lane_color": "WHITE",
+                    "lane_type": "SINGLE_SOLID_LINE",
+                    "polyline": [
+                        {
+                            "lane_orientation": "NA",
+                            "point_end": {
+                                "x": 1054.6918111416448,
+                                "y": 797.1563585415419
+                            },
+                            "point_start": {
+                                "x": 1169.3405744501647,
+                                "y": 887.2890232630257
+                            }
+                        }
+                    ]
+                }
+            ],
+            "semantic_lanes": [
+                {
+                    "cross_check": 0,
+                    "id": "67725691-2669-4896-88d9-788730923a54",
+                    "semantic_lane_direction": "STRAIGHT",
+                    "semantic_lane_position": "HOST",
+                    "semantic_lane_type": []
+                }
+            ],
+            "semantic_road_description": [
+                {
+                    "cross_check": 0,
+                    "id": "6443d454-ac92-4ba9-a565-75d81fddf9a9",
+                    "semantic_road_description_point": {
+                        "x": 1103.312011231103,
+                        "y": 835.8587682213698
+                    },
+                    "semantic_road_description_type": "SPLITTING LANES"
+                }
+            ],
+            "timestamp": 1536131198652285042
+        }
+    ]
+}
+
